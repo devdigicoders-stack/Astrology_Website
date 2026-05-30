@@ -1,0 +1,122 @@
+.audio-call-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #1a1a2e 0%, #0d0d1a 100%);
+  font-family: 'Inter', sans-serif;
+}
+
+.audio-call-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem 2.5rem;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(196,155,99,0.2);
+  min-width: 320px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.audio-avatar-ring {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(196,155,99,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: ring-pulse 2s ease-in-out infinite;
+}
+
+.audio-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c49b63, #8b6914);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+.audio-remote-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.audio-status {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.connected-label {
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.connecting-label {
+  color: #94a3b8;
+}
+
+.audio-timer {
+  font-size: 2rem;
+  font-weight: 300;
+  color: #c49b63;
+  letter-spacing: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.audio-controls {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.audio-ctrl-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  padding: 1rem;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 70px;
+  font-size: 0.8rem;
+}
+
+.audio-ctrl-btn:hover {
+  background: rgba(255,255,255,0.2);
+  transform: scale(1.05);
+}
+
+.audio-ctrl-btn.muted {
+  background: rgba(239,68,68,0.25);
+  color: #fca5a5;
+}
+
+.end-audio-btn {
+  background: #ef4444 !important;
+  box-shadow: 0 4px 15px rgba(239,68,68,0.4);
+}
+
+.end-audio-btn:hover {
+  background: #dc2626 !important;
+}
+
+@keyframes ring-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(196,155,99,0.4); }
+  50% { box-shadow: 0 0 0 20px rgba(196,155,99,0); }
+}

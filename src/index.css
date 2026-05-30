@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #a68a56; /* Elegant Dark Gold for light background contrast */
+  --color-primary-hover: #bda069;
+  --color-dark: #EDE9E2; /* The requested warm off-white / parchment color */
+  --color-card: #ffffff;
+  --color-light: #1c1c1c;
+  --color-muted: #5e646d;
+  --font-cinzel: "Cinzel", serif;
+  --font-inter: "Inter", sans-serif;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-delayed: float-delayed 7s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 25s linear infinite;
+  --animate-spin-slower: spin-slower 45s linear infinite;
+  --animate-pulse-slow: pulse-slow 4s ease-in-out infinite;
+  --animate-marquee: marquee 30s linear infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(3deg); }
+}
+
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(-3deg); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-slower {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.15; filter: blur(40px); }
+  50% { opacity: 0.3; filter: blur(60px); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+body {
+  font-family: var(--font-inter);
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #EDE9E2;
+}
+::-webkit-scrollbar-thumb {
+  background: #dcd7ce;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a68a56;
+}
+
+/* Perspective utility for card flips */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Custom glow utility */
+.glow-primary {
+  box-shadow: 0 0 20px rgba(166,138,86,0.15);
+}
+
+.glow-primary-hover:hover {
+  box-shadow: 0 0 25px rgba(166,138,86,0.3);
+}
