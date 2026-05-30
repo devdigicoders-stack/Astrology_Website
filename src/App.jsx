@@ -21,6 +21,7 @@ import ChatRoom from './pages/ChatRoom';
 import VideoCallRoom from './pages/VideoCallRoom';
 import AudioCallRoom from './pages/AudioCallRoom';
 import Kundali from './pages/Kundali';
+import Horoscope from './pages/Horoscope';
 import AddMoney from './pages/AddMoney';
 import Withdrawal from './pages/Withdrawal';
 import TransactionHistory from './pages/TransactionHistory';
@@ -58,6 +59,7 @@ function App() {
           <Route path="/astrologers" element={<AstrologersList />} />
           <Route path="/astrologer/:id" element={<AstrologerProfile />} />
           <Route path="/kundali" element={<Kundali />} />
+          <Route path="/horoscope" element={<Horoscope />} />
           <Route path="/add-money" element={<AddMoney />} />
           <Route path="/withdrawal" element={<Withdrawal />} />
           <Route path="/transactions" element={<TransactionHistory />} />

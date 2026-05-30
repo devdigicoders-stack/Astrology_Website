@@ -31,6 +31,7 @@ const Navbar = () => {
     { name: 'Contact Us', path: '/contact' },
     { name: 'Chat with AI', path: '/chat-with-ai' },
     { name: 'Kundali', path: '/kundali' },
+    { name: 'Horoscope', path: '/horoscope' },
     { name: 'Add Money', path: '/add-money' },
     { name: 'Withdraw Funds', path: '/withdrawal' },
     { name: 'Transactions', path: '/transactions' },
