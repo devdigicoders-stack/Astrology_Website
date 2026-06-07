@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
-  
+
   // State for the multi-step form
   const [step, setStep] = useState(1); // 1: Phone, 2: OTP, 3: Registration
-  
+
   // Form fields
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
@@ -16,7 +16,7 @@ const Login = () => {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [timeOfBirth, setTimeOfBirth] = useState('');
   const [placeOfBirth, setPlaceOfBirth] = useState('');
-  
+
   // Loading & Error states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -28,7 +28,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     setMessage('');
-    
+
     if (!/^\d{10}$/.test(phoneNumber)) {
       setError('Please enter a valid 10-digit phone number');
       return;
@@ -42,7 +42,7 @@ const Login = () => {
         body: JSON.stringify({ phoneNumber })
       });
       const data = await res.json();
-      
+
       if (data.success) {
         setMessage('OTP has been sent to your phone number.');
         setStep(2);
@@ -59,7 +59,7 @@ const Login = () => {
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     setError('');
-    
+
     if (!otp) {
       setError('Please enter the OTP');
       return;
@@ -73,7 +73,7 @@ const Login = () => {
         body: JSON.stringify({ phoneNumber, otp })
       });
       const data = await res.json();
-      
+
       if (data.success) {
         // Login successful
         localStorage.setItem('token', data.token);
@@ -96,7 +96,7 @@ const Login = () => {
   const handleCompleteRegistration = async (e) => {
     e.preventDefault();
     setError('');
-    
+
     if (!name || !email) {
       setError('Name and Email are required.');
       return;
@@ -107,10 +107,10 @@ const Login = () => {
       const res = await fetch(`${API_URL}/user/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          phoneNumber, 
-          otp, 
-          name, 
+        body: JSON.stringify({
+          phoneNumber,
+          otp,
+          name,
           email,
           gender,
           dateOfBirth,
@@ -119,7 +119,7 @@ const Login = () => {
         })
       });
       const data = await res.json();
-      
+
       if (data.success) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
