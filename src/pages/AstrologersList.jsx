@@ -7,7 +7,7 @@ const AstrologersList = () => {
   const [astrologers, setAstrologers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  
+
   // Filter States
   const [expertise, setExpertise] = useState('');
   const [language, setLanguage] = useState('');
@@ -19,7 +19,7 @@ const AstrologersList = () => {
   const [socket, setSocket] = useState(null);
   const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   const BACKEND_URL = API_URL.replace('/api', '');
 
   useEffect(() => {
@@ -29,12 +29,12 @@ const AstrologersList = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userStr = localStorage.getItem('user');
-    
+
     if (token && userStr) {
       try {
         const user = JSON.parse(userStr);
         const newSocket = io(BACKEND_URL);
-        
+
         newSocket.on('connect', () => {
           newSocket.emit('join_room', user._id);
         });
@@ -73,11 +73,11 @@ const AstrologersList = () => {
       if (maxCharge) queryParams.append('maxCharge', maxCharge);
       if (availability) queryParams.append('availability', availability);
 
-      const url = `${API_URL}/astrologer/public${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
-      
+      const url = `${API_URL}/api/astrologer/public${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+
       const response = await fetch(url);
       const data = await response.json();
-      
+
       if (data.success) {
         setAstrologers(data.astrologers);
       } else {
@@ -93,7 +93,7 @@ const AstrologersList = () => {
 
   const handleInitiate = async (astrologerId, type) => {
     const token = localStorage.getItem('token');
-    
+
     if (!token) {
       alert("Please login first to connect with astrologers!");
       // Optionally redirect to login: window.location.href = '/login';
@@ -101,7 +101,7 @@ const AstrologersList = () => {
     }
 
     try {
-      const response = await fetch(`${API_URL}/calls/initiate`, {
+      const response = await fetch(`${API_URL}/api/calls/initiate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,9 +109,9 @@ const AstrologersList = () => {
         },
         body: JSON.stringify({ astrologerId, type })
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         setWaitingCall(true);
       } else {
@@ -146,9 +146,9 @@ const AstrologersList = () => {
             <Filter size={18} className="text-[#c49b63]" />
             <span>Filters:</span>
           </div>
-          
+
           <div className="flex-1 flex flex-col sm:flex-row gap-4 w-full">
-            <select 
+            <select
               className="flex-1 bg-[#faf8f5] border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c49b63] text-sm"
               value={availability}
               onChange={(e) => setAvailability(e.target.value)}
@@ -159,7 +159,7 @@ const AstrologersList = () => {
               <option value="busy">🟡 Busy</option>
             </select>
 
-            <select 
+            <select
               className="flex-1 bg-[#faf8f5] border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c49b63] text-sm"
               value={expertise}
               onChange={(e) => setExpertise(e.target.value)}
@@ -171,7 +171,7 @@ const AstrologersList = () => {
               <option value="Vastu">Vastu</option>
             </select>
 
-            <select 
+            <select
               className="flex-1 bg-[#faf8f5] border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c49b63] text-sm"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
@@ -183,7 +183,7 @@ const AstrologersList = () => {
               <option value="Gujarati">Gujarati</option>
             </select>
 
-            <select 
+            <select
               className="flex-1 bg-[#faf8f5] border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c49b63] text-sm"
               value={maxCharge}
               onChange={(e) => setMaxCharge(e.target.value)}
@@ -233,7 +233,7 @@ const AstrologersList = () => {
           /* Error State */
           <div className="text-center py-20">
             <p className="text-red-500 text-lg">{error}</p>
-            <button 
+            <button
               onClick={fetchAstrologers}
               className="mt-4 px-6 py-2 bg-[#1c1c1c] text-white rounded-md hover:bg-black transition-colors"
             >
@@ -252,7 +252,7 @@ const AstrologersList = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {astrologers.map((astro) => (
               <div key={astro._id} className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 border border-[#f0ece6] overflow-hidden group">
-                
+
                 {/* Status Badge */}
                 {astro.availability === 'online' ? (
                   <div className="absolute mt-4 ml-4 px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full flex items-center space-x-1 z-10 shadow-md">
@@ -271,15 +271,15 @@ const AstrologersList = () => {
                     {/* Profile Picture */}
                     <div className="relative">
                       <div className="w-20 h-20 rounded-full p-1 border-2 border-[#c49b63] bg-white group-hover:scale-105 transition-transform duration-300">
-                        <img 
-                          src={getImageUrl(astro.profilePic)} 
-                          alt={astro.name} 
+                        <img
+                          src={getImageUrl(astro.profilePic)}
+                          alt={astro.name}
                           className="w-full h-full rounded-full object-cover"
                           onError={(e) => { e.target.src = 'https://ui-avatars.com/api/?name=Astro&background=c49b63&color=fff' }}
                         />
                       </div>
                     </div>
-                    
+
                     {/* Basic Info */}
                     <div className="flex-1 pt-1">
                       <h3 className="text-xl font-bold text-[#1c1c1c] truncate">{astro.name}</h3>
@@ -298,7 +298,7 @@ const AstrologersList = () => {
                   <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-sm text-gray-600 mb-6 bg-[#faf8f5] p-4 rounded-xl border border-[#f0ece6]">
                     <div className="flex items-center space-x-2">
                       <Languages size={16} className="text-[#c49b63]" />
-                      <span className="truncate">{astro.languages?.slice(0,2).join(', ') || 'Hindi'}</span>
+                      <span className="truncate">{astro.languages?.slice(0, 2).join(', ') || 'Hindi'}</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Award size={16} className="text-[#c49b63]" />
@@ -314,7 +314,7 @@ const AstrologersList = () => {
 
                   {/* Actions */}
                   <div className="grid grid-cols-3 gap-2 mt-2">
-                    <button 
+                    <button
                       onClick={(e) => { e.preventDefault(); handleInitiate(astro._id, 'chat'); }}
                       disabled={astro.availability !== 'online'}
                       className={`flex items-center justify-center space-x-1 py-2 text-xs md:text-sm rounded-lg font-semibold transition-colors duration-300 shadow-sm ${astro.availability === 'online' ? 'bg-[#1c1c1c] text-white hover:bg-black' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
@@ -322,7 +322,7 @@ const AstrologersList = () => {
                       <MessageCircle size={16} />
                       <span className="hidden sm:inline">{astro.availability === 'online' ? 'Chat' : 'Offline'}</span>
                     </button>
-                    <button 
+                    <button
                       onClick={(e) => { e.preventDefault(); handleInitiate(astro._id, 'audio'); }}
                       disabled={astro.availability !== 'online'}
                       className={`flex items-center justify-center space-x-1 py-2 text-xs md:text-sm border rounded-lg font-semibold transition-colors duration-300 ${astro.availability === 'online' ? 'border-[#c49b63] text-[#c49b63] hover:bg-[#faf8f5]' : 'border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50'}`}
@@ -330,7 +330,7 @@ const AstrologersList = () => {
                       <Phone size={16} />
                       <span className="hidden sm:inline">{astro.availability === 'online' ? 'Call' : 'Offline'}</span>
                     </button>
-                    <button 
+                    <button
                       onClick={(e) => { e.preventDefault(); handleInitiate(astro._id, 'video'); }}
                       disabled={astro.availability !== 'online'}
                       className={`flex items-center justify-center space-x-1 py-2 text-xs md:text-sm border rounded-lg font-semibold transition-colors duration-300 ${astro.availability === 'online' ? 'border-gray-200 text-blue-600 hover:bg-gray-50' : 'border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50'}`}

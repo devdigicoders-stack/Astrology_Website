@@ -25,7 +25,7 @@ const AudioCallRoom = () => {
   const timerRef = useRef(null);
   const socketRef = useRef(null);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   const SOCKET_URL = API_URL.replace('/api', '');
   const token = localStorage.getItem('token');
 
@@ -44,7 +44,7 @@ const AudioCallRoom = () => {
       if (userData) {
         newSocket.emit('join_room', userData._id);
       }
-      
+
       // Tell the server to start the billing timer
       newSocket.emit('start_timer', { callId });
     });
@@ -85,7 +85,7 @@ const AudioCallRoom = () => {
 
   const fetchCallDetails = async () => {
     try {
-      const res = await fetch(`${API_URL}/calls/${callId}`, {
+      const res = await fetch(`${API_URL}/api/calls/${callId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -97,7 +97,7 @@ const AudioCallRoom = () => {
 
   const joinCall = async () => {
     try {
-      const res = await fetch(`${API_URL}/calls/${callId}/agora-token`, {
+      const res = await fetch(`${API_URL}/api/calls/${callId}/agora-token`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -138,17 +138,17 @@ const AudioCallRoom = () => {
       try {
         micTrackRef.current.stop();
         micTrackRef.current.close();
-      } catch (e) {}
+      } catch (e) { }
       micTrackRef.current = null;
     } else if (micTrack) {
       try {
         micTrack.stop();
         micTrack.close();
-      } catch (e) {}
+      } catch (e) { }
     }
-    
+
     if (clientRef.current) {
-      try { await clientRef.current.leave(); } catch (e) {}
+      try { await clientRef.current.leave(); } catch (e) { }
     }
   };
 
@@ -166,7 +166,7 @@ const AudioCallRoom = () => {
     await leaveCall();
     clearInterval(timerRef.current);
     try {
-      await fetch(`${API_URL}/calls/end`, {
+      await fetch(`${API_URL}/api/calls/end`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ callId })

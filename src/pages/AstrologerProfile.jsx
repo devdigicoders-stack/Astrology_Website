@@ -5,12 +5,12 @@ import { Star, MessageCircle, Phone, Video, Languages, Award, IndianRupee, Arrow
 const AstrologerProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const [astrologer, setAstrologer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   const BACKEND_URL = API_URL.replace('/api', '');
 
   useEffect(() => {
@@ -19,9 +19,9 @@ const AstrologerProfile = () => {
 
   const fetchAstrologerDetails = async () => {
     try {
-      const response = await fetch(`${API_URL}/astrologer/public/${id}`);
+      const response = await fetch(`${API_URL}/api/astrologer/public/${id}`);
       const data = await response.json();
-      
+
       if (data.success) {
         setAstrologer(data.astrologer);
       } else {
@@ -43,7 +43,7 @@ const AstrologerProfile = () => {
 
   const handleInitiate = async (type) => {
     const token = localStorage.getItem('token');
-    
+
     if (!token) {
       alert("Please login first to connect with astrologers!");
       return;
@@ -52,8 +52,8 @@ const AstrologerProfile = () => {
     try {
       // type passed from buttons is 'Chat', 'Audio Call', 'Video Call'. Map it to api types:
       const apiType = type === 'Chat' ? 'chat' : type === 'Audio Call' ? 'audio' : 'video';
-      
-      const response = await fetch(`${API_URL}/calls/initiate`, {
+
+      const response = await fetch(`${API_URL}/api/calls/initiate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,9 +61,9 @@ const AstrologerProfile = () => {
         },
         body: JSON.stringify({ astrologerId: id, type: apiType })
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         alert(`Successfully initiated ${type}! Waiting for Astrologer to accept...`);
       } else {
@@ -92,7 +92,7 @@ const AstrologerProfile = () => {
       <div className="min-h-screen bg-[#fdfaf5] pt-24 pb-16 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-500 text-xl mb-4">{error || 'Astrologer not found'}</p>
-          <button 
+          <button
             onClick={() => navigate('/astrologers')}
             className="px-6 py-2 bg-[#1c1c1c] text-white rounded-lg hover:bg-black transition-colors"
           >
@@ -106,9 +106,9 @@ const AstrologerProfile = () => {
   return (
     <div className="bg-[#fdfaf5] min-h-screen pt-24 pb-16 font-inter">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Back Button */}
-        <button 
+        <button
           onClick={() => navigate('/astrologers')}
           className="flex items-center space-x-2 text-gray-600 hover:text-[#c49b63] transition-colors mb-6 font-medium"
         >
@@ -129,9 +129,9 @@ const AstrologerProfile = () => {
             {/* Profile Image & Basic Info */}
             <div className="flex flex-col md:flex-row md:items-end -mt-16 mb-8 gap-6">
               <div className="w-32 h-32 rounded-full border-4 border-white shadow-xl bg-white relative shrink-0">
-                <img 
-                  src={getImageUrl(astrologer.profilePic)} 
-                  alt={astrologer.name} 
+                <img
+                  src={getImageUrl(astrologer.profilePic)}
+                  alt={astrologer.name}
                   className="w-full h-full rounded-full object-cover"
                   onError={(e) => { e.target.src = 'https://ui-avatars.com/api/?name=Astro&background=c49b63&color=fff' }}
                 />
@@ -141,7 +141,7 @@ const AstrologerProfile = () => {
                   </div>
                 )}
               </div>
-              
+
               <div className="flex-1 pb-2">
                 <h1 className="text-3xl font-extrabold text-[#1c1c1c] font-cinzel">{astrologer.name}</h1>
                 <p className="text-[#c49b63] font-medium text-lg mt-1">
@@ -182,7 +182,7 @@ const AstrologerProfile = () => {
 
             {/* Main Content Area */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              
+
               {/* Left Column: About */}
               <div className="md:col-span-2 space-y-6">
                 <div>
@@ -194,8 +194,8 @@ const AstrologerProfile = () => {
                       <p className="whitespace-pre-wrap">{astrologer.about}</p>
                     ) : (
                       <p>
-                        {astrologer.name} is a highly experienced astrologer specializing in {astrologer.expertise?.join(', ')}. 
-                        With a deep understanding of cosmic energies, {astrologer.name} has guided thousands of individuals 
+                        {astrologer.name} is a highly experienced astrologer specializing in {astrologer.expertise?.join(', ')}.
+                        With a deep understanding of cosmic energies, {astrologer.name} has guided thousands of individuals
                         through their life's challenges regarding career, love, marriage, and personal growth.
                       </p>
                     )}
@@ -207,9 +207,9 @@ const AstrologerProfile = () => {
               <div className="md:col-span-1">
                 <div className="bg-white rounded-2xl border-2 border-[#c49b63] p-5 shadow-lg sticky top-24">
                   <h3 className="font-bold text-center text-lg text-[#1c1c1c] mb-4">Connect Now</h3>
-                  
+
                   <div className="space-y-3">
-                    <button 
+                    <button
                       onClick={() => handleInitiate('Chat')}
                       disabled={astrologer.availability !== 'online'}
                       className={`w-full flex items-center justify-between p-4 rounded-xl transition-all group shadow-md ${astrologer.availability === 'online' ? 'bg-[#1c1c1c] text-white hover:bg-black' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
@@ -221,7 +221,7 @@ const AstrologerProfile = () => {
                       <span className="text-sm">₹{astrologer.pricing?.chatRate || 0}/min</span>
                     </button>
 
-                    <button 
+                    <button
                       onClick={() => handleInitiate('Audio Call')}
                       disabled={astrologer.availability !== 'online'}
                       className={`w-full flex items-center justify-between p-4 border rounded-xl transition-all group ${astrologer.availability === 'online' ? 'border-[#c49b63] text-[#1c1c1c] hover:bg-[#faf8f5]' : 'border-gray-200 text-gray-400 bg-gray-50 cursor-not-allowed'}`}
@@ -233,7 +233,7 @@ const AstrologerProfile = () => {
                       <span className="text-sm font-medium">₹{astrologer.pricing?.audioCallRate || (astrologer.pricing?.chatRate || 0) + 5}/min</span>
                     </button>
 
-                    <button 
+                    <button
                       onClick={() => handleInitiate('Video Call')}
                       disabled={astrologer.availability !== 'online'}
                       className={`w-full flex items-center justify-between p-4 border rounded-xl transition-all group ${astrologer.availability === 'online' ? 'border-gray-200 text-[#1c1c1c] hover:bg-gray-50' : 'border-gray-200 text-gray-400 bg-gray-50 cursor-not-allowed'}`}

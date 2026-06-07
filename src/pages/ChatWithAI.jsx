@@ -12,7 +12,7 @@ const ChatWithAI = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const ChatWithAI = () => {
 
   const fetchSessions = async () => {
     try {
-      const res = await fetch(`${API_URL}/ai-chat/sessions`, {
+      const res = await fetch(`${API_URL}/api/ai-chat/sessions`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -61,7 +61,7 @@ const ChatWithAI = () => {
   const fetchHistory = async (sessionId) => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/ai-chat/history/${sessionId}`, {
+      const res = await fetch(`${API_URL}/api/ai-chat/history/${sessionId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -95,7 +95,7 @@ const ChatWithAI = () => {
         body.sessionId = currentSessionId;
       }
 
-      const res = await fetch(`${API_URL}/ai-chat/send`, {
+      const res = await fetch(`${API_URL}/api/ai-chat/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ const ChatWithAI = () => {
 
       if (data.success) {
         setMessages(prev => [...prev, { role: 'model', text: data.data.aiResponse }]);
-        
+
         // If it was a new chat, we need to update the session ID and refresh sessions list
         if (!currentSessionId) {
           setCurrentSessionId(data.data.sessionId);
@@ -134,10 +134,10 @@ const ChatWithAI = () => {
 
   return (
     <div className="flex h-screen bg-[#fdfaf5] font-inter overflow-hidden relative">
-      
+
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
@@ -158,7 +158,7 @@ const ChatWithAI = () => {
         </div>
 
         <div className="p-4">
-          <button 
+          <button
             onClick={startNewChat}
             className="w-full flex items-center justify-center space-x-2 bg-[#c49b63] hover:bg-[#b59055] text-white py-3 rounded-md transition-colors duration-200 font-medium"
           >
@@ -180,11 +180,10 @@ const ChatWithAI = () => {
                   setCurrentSessionId(session._id);
                   if (window.innerWidth < 1024) setSidebarOpen(false);
                 }}
-                className={`w-full flex items-center space-x-3 text-left p-3 rounded-md transition-colors duration-200 ${
-                  currentSessionId === session._id 
-                    ? 'bg-white/10 text-white border-l-4 border-[#c49b63]' 
-                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
-                }`}
+                className={`w-full flex items-center space-x-3 text-left p-3 rounded-md transition-colors duration-200 ${currentSessionId === session._id
+                  ? 'bg-white/10 text-white border-l-4 border-[#c49b63]'
+                  : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                  }`}
               >
                 <MessageSquare size={18} className="shrink-0" />
                 <span className="truncate text-sm font-medium">
@@ -229,20 +228,18 @@ const ChatWithAI = () => {
             messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`flex max-w-[85%] sm:max-w-[75%] ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                  
+
                   {/* Avatar */}
-                  <div className={`shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
-                    msg.role === 'user' ? 'bg-[#1c1c1c] text-white ml-3' : 'bg-[#fdfaf5] border border-[#c49b63]/30 text-[#c49b63] mr-3'
-                  }`}>
+                  <div className={`shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${msg.role === 'user' ? 'bg-[#1c1c1c] text-white ml-3' : 'bg-[#fdfaf5] border border-[#c49b63]/30 text-[#c49b63] mr-3'
+                    }`}>
                     {msg.role === 'user' ? <User size={18} /> : <Bot size={22} />}
                   </div>
 
                   {/* Message Bubble */}
-                  <div className={`p-3 sm:p-4 rounded-2xl ${
-                    msg.role === 'user' 
-                      ? 'bg-[#1c1c1c] text-white rounded-tr-sm' 
-                      : 'bg-white border border-[#f0ece6] shadow-sm text-gray-800 rounded-tl-sm'
-                  }`}>
+                  <div className={`p-3 sm:p-4 rounded-2xl ${msg.role === 'user'
+                    ? 'bg-[#1c1c1c] text-white rounded-tr-sm'
+                    : 'bg-white border border-[#f0ece6] shadow-sm text-gray-800 rounded-tl-sm'
+                    }`}>
                     <p className="whitespace-pre-wrap text-[14px] sm:text-[15px] leading-relaxed">
                       {msg.text}
                     </p>
@@ -252,7 +249,7 @@ const ChatWithAI = () => {
               </div>
             ))
           )}
-          
+
           {loading && messages.length > 0 && (
             <div className="flex justify-start">
               <div className="flex max-w-[85%] flex-row">

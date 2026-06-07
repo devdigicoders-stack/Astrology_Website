@@ -16,7 +16,7 @@ const ChatRoom = () => {
   const [showRatingModal, setShowRatingModal] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   const SOCKET_URL = API_URL.replace('/api', '');
   const BACKEND_URL = API_URL.replace('/api', '');
   const token = localStorage.getItem('token');
@@ -120,7 +120,7 @@ const ChatRoom = () => {
 
   const fetchCallDetails = async () => {
     try {
-      const res = await fetch(`${API_URL}/calls/${callId}`, {
+      const res = await fetch(`${API_URL}/api/calls/${callId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -132,7 +132,7 @@ const ChatRoom = () => {
 
   const fetchChatHistory = async () => {
     try {
-      const res = await fetch(`${API_URL}/chat/${callId}`, {
+      const res = await fetch(`${API_URL}/api/chat/${callId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -147,7 +147,7 @@ const ChatRoom = () => {
     if (!newMessage.trim() || !callDetails) return;
 
     try {
-      const res = await fetch(`${API_URL}/chat/send`, {
+      const res = await fetch(`${API_URL}/api/chat/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ const ChatRoom = () => {
     if (!result.isConfirmed) return;
 
     try {
-      await fetch(`${API_URL}/calls/end`, {
+      await fetch(`${API_URL}/api/calls/end`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -211,10 +211,10 @@ const ChatRoom = () => {
       <header className="bg-white border-b border-gray-200 p-4 flex items-center justify-between z-10 sticky top-0 shadow-sm">
         <div className="flex items-center space-x-4">
           <div className="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
-            <img 
-              src={getImageUrl(callDetails?.astrologer?.profilePic, callDetails?.astrologer?.name || 'Astro')} 
-              alt="Astro" 
-              className="w-full h-full object-cover" 
+            <img
+              src={getImageUrl(callDetails?.astrologer?.profilePic, callDetails?.astrologer?.name || 'Astro')}
+              alt="Astro"
+              className="w-full h-full object-cover"
             />
           </div>
           <div>
@@ -302,7 +302,7 @@ const InlineChatRatingModal = ({ onClose, astrologerId, callId, astrologerName, 
     }
     setIsSubmitting(true);
     try {
-      const res = await fetch(`${apiUrl}/reviews`, {
+      const res = await fetch(`${apiUrl}/api/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ astrologerId, callId, rating, comment })

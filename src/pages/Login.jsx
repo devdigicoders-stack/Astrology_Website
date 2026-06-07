@@ -22,7 +22,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/user/send-otp`, {
+      const res = await fetch(`${API_URL}/api/user/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phoneNumber })
@@ -67,7 +67,7 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/user/verify-otp`, {
+      const res = await fetch(`${API_URL}/api/user/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phoneNumber, otp })
@@ -104,7 +104,7 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/user/verify-otp`, {
+      const res = await fetch(`${API_URL}/api/user/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

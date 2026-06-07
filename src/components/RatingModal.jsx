@@ -9,7 +9,7 @@ const RatingModal = ({ isOpen, onClose, astrologerId, callId, astrologerName }) 
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   if (!isOpen) return null;
 
@@ -23,7 +23,7 @@ const RatingModal = ({ isOpen, onClose, astrologerId, callId, astrologerName }) 
     const token = localStorage.getItem('token');
 
     try {
-      const res = await fetch(`${API_URL}/reviews`, {
+      const res = await fetch(`${API_URL}/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

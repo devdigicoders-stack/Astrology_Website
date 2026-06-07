@@ -25,13 +25,13 @@ const VideoCallRoom = () => {
   const socketRef = useRef(null);
   const localTracksRef = useRef([]);  // ← Ref mein store karo taaki leaveCall mein latest tracks mile
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   const SOCKET_URL = API_URL.replace('/api', '');
   const token = localStorage.getItem('token');
 
   useEffect(() => {
     if (!token || !callId) return;
-    
+
     // Connect to Socket
     const newSocket = io(SOCKET_URL);
     socketRef.current = newSocket;
@@ -44,7 +44,7 @@ const VideoCallRoom = () => {
       if (userData) {
         newSocket.emit('join_room', userData._id);
       }
-      
+
       // Tell the server to start the billing timer
       newSocket.emit('start_timer', { callId });
     });
@@ -82,7 +82,7 @@ const VideoCallRoom = () => {
 
   const fetchCallDetails = async () => {
     try {
-      const res = await fetch(`${API_URL}/calls/${callId}`, {
+      const res = await fetch(`${API_URL}/api/calls/${callId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -95,7 +95,7 @@ const VideoCallRoom = () => {
   const joinCall = async () => {
     try {
       // Get Agora token from backend
-      const res = await fetch(`${API_URL}/calls/${callId}/agora-token`, {
+      const res = await fetch(`${API_URL}/api/calls/${callId}/agora-token`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -150,10 +150,10 @@ const VideoCallRoom = () => {
     } catch (err) {
       console.error('Agora join error:', err);
       const errMsg = err?.message || err?.toString() || 'Unknown error';
-      Swal.fire({ 
-        icon: 'error', 
-        title: 'Connection Error', 
-        html: `Failed to join video call.<br/><small style="color:#94a3b8">${errMsg}</small><br/><br/>Please check camera/mic permissions and try again.` 
+      Swal.fire({
+        icon: 'error',
+        title: 'Connection Error',
+        html: `Failed to join video call.<br/><small style="color:#94a3b8">${errMsg}</small><br/><br/>Please check camera/mic permissions and try again.`
       });
     }
   };
@@ -161,11 +161,11 @@ const VideoCallRoom = () => {
   const leaveCall = async () => {
     // Ref se lo — hamesha latest tracks milegi, closure problem nahi hogi
     localTracksRef.current.forEach(track => {
-      try { track.stop(); track.close(); } catch (e) {}
+      try { track.stop(); track.close(); } catch (e) { }
     });
     localTracksRef.current = [];
     if (clientRef.current) {
-      try { await clientRef.current.leave(); } catch (e) {}
+      try { await clientRef.current.leave(); } catch (e) { }
       clientRef.current = null;
     }
   };
@@ -184,7 +184,7 @@ const VideoCallRoom = () => {
     await leaveCall();
 
     try {
-      await fetch(`${API_URL}/calls/end`, {
+      await fetch(`${API_URL}/api/calls/end`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ callId })
