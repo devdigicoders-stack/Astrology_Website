@@ -22,7 +22,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
   const handleSendOTP = async (e) => {
     e.preventDefault();

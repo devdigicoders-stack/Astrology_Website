@@ -16,7 +16,7 @@ const ChatRoom = () => {
   const [showRatingModal, setShowRatingModal] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
   const SOCKET_URL = API_URL.replace('/api', '');
   const BACKEND_URL = API_URL.replace('/api', '');
   const token = localStorage.getItem('token');

@@ -9,7 +9,7 @@ const RatingModal = ({ isOpen, onClose, astrologerId, callId, astrologerName }) 
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
   if (!isOpen) return null;
 

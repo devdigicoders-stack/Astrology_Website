@@ -25,7 +25,7 @@ const VideoCallRoom = () => {
   const socketRef = useRef(null);
   const localTracksRef = useRef([]);  // ← Ref mein store karo taaki leaveCall mein latest tracks mile
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
   const SOCKET_URL = API_URL.replace('/api', '');
   const token = localStorage.getItem('token');
 
